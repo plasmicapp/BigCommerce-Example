@@ -1,0 +1,43 @@
+.root {
+  display: inline-flex;
+  flex-direction: column;
+  position: relative;
+  width: auto;
+  height: auto;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+.slotTargetChildren {
+  font-size: 18px;
+  color: var(--token-qKhMu66CwSx);
+}
+.slotTargetChildrenisActive > :global(.__wab_text),
+.slotTargetChildrenisActive > :global(.__wab_slot-string-wrapper),
+.slotTargetChildrenisActive > :global(.__wab_slot) > :global(.__wab_text),
+.slotTargetChildrenisActive
+  > :global(.__wab_slot)
+  > :global(.__wab_slot-string-wrapper),
+.slotTargetChildrenisActive
+  > :global(.__wab_slot)
+  > :global(.__wab_slot)
+  > :global(.__wab_text),
+.slotTargetChildrenisActive
+  > :global(.__wab_slot)
+  > :global(.__wab_slot)
+  > :global(.__wab_slot-string-wrapper),
+.slotTargetChildrenisActive
+  > :global(.__wab_slot)
+  > :global(.__wab_slot)
+  > :global(.__wab_slot)
+  > :global(.__wab_text),
+.slotTargetChildrenisActive
+  > :global(.__wab_slot)
+  > :global(.__wab_slot)
+  > :global(.__wab_slot)
+  > :global(.__wab_slot-string-wrapper) {
+  text-decoration-line: underline;
+}
+.root:hover .slotTargetChildren {
+  color: var(--token-iR8SeEwQZ);
+}
