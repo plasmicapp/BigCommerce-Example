@@ -17,7 +17,7 @@ import Link, { LinkProps } from "next/link";
 import { useRouter } from "next/router";
 
 import * as p from "@plasmicapp/react-web";
-import * as ph from "@plasmicapp/host";
+import * as ph from "@plasmicapp/react-web/lib/host";
 
 import {
   hasVariant,
@@ -45,9 +45,11 @@ import sty from "./PlasmicProductGrid.module.css"; // plasmic-import: iNyke70nGo
 export type PlasmicProductGrid__VariantMembers = {
   layout: "b";
 };
+
 export type PlasmicProductGrid__VariantsArgs = {
   layout?: SingleChoiceArg<"b">;
 };
+
 type VariantPropType = keyof PlasmicProductGrid__VariantsArgs;
 export const PlasmicProductGrid__VariantProps = new Array<VariantPropType>(
   "layout"
@@ -58,6 +60,7 @@ export type PlasmicProductGrid__ArgsType = {
   product1?: React.ReactNode;
   product2?: React.ReactNode;
 };
+
 type ArgPropType = keyof PlasmicProductGrid__ArgsType;
 export const PlasmicProductGrid__ArgProps = new Array<ArgPropType>(
   "product0",
@@ -85,6 +88,13 @@ const __wrapUserPromise =
     return await promise;
   });
 
+function useNextRouter() {
+  try {
+    return useRouter();
+  } catch {}
+  return undefined;
+}
+
 function PlasmicProductGrid__RenderFunc(props: {
   variants: PlasmicProductGrid__VariantsArgs;
   args: PlasmicProductGrid__ArgsType;
@@ -93,15 +103,24 @@ function PlasmicProductGrid__RenderFunc(props: {
   forNode?: string;
 }) {
   const { variants, overrides, forNode } = props;
-  const __nextRouter = useRouter();
+  const __nextRouter = useNextRouter();
 
   const $ctx = ph.useDataEnv?.() || {};
-  const args = React.useMemo(() => Object.assign({}, props.args), [props.args]);
+  const args = React.useMemo(
+    () =>
+      Object.assign(
+        {},
+
+        props.args
+      ),
+    [props.args]
+  );
 
   const $props = {
     ...args,
     ...variants
   };
+
   const refsRef = React.useRef({});
   const $refs = refsRef.current;
 
@@ -118,6 +137,7 @@ function PlasmicProductGrid__RenderFunc(props: {
           : undefined
       }
     ],
+
     [$props, $ctx]
   );
   const $state = p.useDollarState(stateSpecs, { $props, $ctx, $queries });
@@ -180,7 +200,7 @@ const PlasmicDescendants = {
 } as const;
 type NodeNameType = keyof typeof PlasmicDescendants;
 type DescendantsType<T extends NodeNameType> =
-  (typeof PlasmicDescendants)[T][number];
+  typeof PlasmicDescendants[T][number];
 type NodeDefaultElementType = {
   root: "div";
 };
@@ -197,15 +217,15 @@ type NodeComponentProps<T extends NodeNameType> =
     args?: PlasmicProductGrid__ArgsType;
     overrides?: NodeOverridesType<T>;
   } & Omit<PlasmicProductGrid__VariantsArgs, ReservedPropsType> & // Specify variants directly as props
-    /* Specify args directly as props*/ Omit<
-      PlasmicProductGrid__ArgsType,
-      ReservedPropsType
-    > &
-    /* Specify overrides for each element directly as props*/ Omit<
+    // Specify args directly as props
+    Omit<PlasmicProductGrid__ArgsType, ReservedPropsType> &
+    // Specify overrides for each element directly as props
+    Omit<
       NodeOverridesType<T>,
       ReservedPropsType | VariantPropType | ArgPropType
     > &
-    /* Specify props for the root element*/ Omit<
+    // Specify props for the root element
+    Omit<
       Partial<React.ComponentProps<NodeDefaultElementType[T]>>,
       ReservedPropsType | VariantPropType | ArgPropType | DescendantsType<T>
     >;

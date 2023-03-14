@@ -17,7 +17,7 @@ import Link, { LinkProps } from "next/link";
 import { useRouter } from "next/router";
 
 import * as p from "@plasmicapp/react-web";
-import * as ph from "@plasmicapp/host";
+import * as ph from "@plasmicapp/react-web/lib/host";
 
 import {
   hasVariant,
@@ -45,6 +45,7 @@ import projectcss from "./plasmic_copy_of_big_commerce_example.module.css"; // p
 import sty from "./PlasmicLoading.module.css"; // plasmic-import: xkAYXInzzC2Et5/css
 
 export type PlasmicLoading__VariantMembers = {};
+
 export type PlasmicLoading__VariantsArgs = {};
 type VariantPropType = keyof PlasmicLoading__VariantsArgs;
 export const PlasmicLoading__VariantProps = new Array<VariantPropType>();
@@ -71,6 +72,13 @@ const __wrapUserPromise =
     return await promise;
   });
 
+function useNextRouter() {
+  try {
+    return useRouter();
+  } catch {}
+  return undefined;
+}
+
 function PlasmicLoading__RenderFunc(props: {
   variants: PlasmicLoading__VariantsArgs;
   args: PlasmicLoading__ArgsType;
@@ -79,15 +87,24 @@ function PlasmicLoading__RenderFunc(props: {
   forNode?: string;
 }) {
   const { variants, overrides, forNode } = props;
-  const __nextRouter = useRouter();
+  const __nextRouter = useNextRouter();
 
   const $ctx = ph.useDataEnv?.() || {};
-  const args = React.useMemo(() => Object.assign({}, props.args), [props.args]);
+  const args = React.useMemo(
+    () =>
+      Object.assign(
+        {},
+
+        props.args
+      ),
+    [props.args]
+  );
 
   const $props = {
     ...args,
     ...variants
   };
+
   const refsRef = React.useRef({});
   const $refs = refsRef.current;
 
@@ -214,7 +231,7 @@ const PlasmicDescendants = {
 } as const;
 type NodeNameType = keyof typeof PlasmicDescendants;
 type DescendantsType<T extends NodeNameType> =
-  (typeof PlasmicDescendants)[T][number];
+  typeof PlasmicDescendants[T][number];
 type NodeDefaultElementType = {
   root: "div";
   navbar: typeof Navbar;
@@ -233,15 +250,15 @@ type NodeComponentProps<T extends NodeNameType> =
     args?: PlasmicLoading__ArgsType;
     overrides?: NodeOverridesType<T>;
   } & Omit<PlasmicLoading__VariantsArgs, ReservedPropsType> & // Specify variants directly as props
-    /* Specify args directly as props*/ Omit<
-      PlasmicLoading__ArgsType,
-      ReservedPropsType
-    > &
-    /* Specify overrides for each element directly as props*/ Omit<
+    // Specify args directly as props
+    Omit<PlasmicLoading__ArgsType, ReservedPropsType> &
+    // Specify overrides for each element directly as props
+    Omit<
       NodeOverridesType<T>,
       ReservedPropsType | VariantPropType | ArgPropType
     > &
-    /* Specify props for the root element*/ Omit<
+    // Specify props for the root element
+    Omit<
       Partial<React.ComponentProps<NodeDefaultElementType[T]>>,
       ReservedPropsType | VariantPropType | ArgPropType | DescendantsType<T>
     >;

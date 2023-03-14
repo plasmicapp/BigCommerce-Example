@@ -17,7 +17,7 @@ import Link, { LinkProps } from "next/link";
 import { useRouter } from "next/router";
 
 import * as p from "@plasmicapp/react-web";
-import * as ph from "@plasmicapp/host";
+import * as ph from "@plasmicapp/react-web/lib/host";
 
 import {
   hasVariant,
@@ -47,6 +47,7 @@ import sty from "./PlasmicHero.module.css"; // plasmic-import: ebwNt8o70vdJfl/cs
 import ArrowRightIcon from "./icons/PlasmicIcon__ArrowRight"; // plasmic-import: 0N7_4VlElxuX3U/icon
 
 export type PlasmicHero__VariantMembers = {};
+
 export type PlasmicHero__VariantsArgs = {};
 type VariantPropType = keyof PlasmicHero__VariantsArgs;
 export const PlasmicHero__VariantProps = new Array<VariantPropType>();
@@ -74,6 +75,13 @@ const __wrapUserPromise =
     return await promise;
   });
 
+function useNextRouter() {
+  try {
+    return useRouter();
+  } catch {}
+  return undefined;
+}
+
 function PlasmicHero__RenderFunc(props: {
   variants: PlasmicHero__VariantsArgs;
   args: PlasmicHero__ArgsType;
@@ -82,15 +90,24 @@ function PlasmicHero__RenderFunc(props: {
   forNode?: string;
 }) {
   const { variants, overrides, forNode } = props;
-  const __nextRouter = useRouter();
+  const __nextRouter = useNextRouter();
 
   const $ctx = ph.useDataEnv?.() || {};
-  const args = React.useMemo(() => Object.assign({}, props.args), [props.args]);
+  const args = React.useMemo(
+    () =>
+      Object.assign(
+        {},
+
+        props.args
+      ),
+    [props.args]
+  );
 
   const $props = {
     ...args,
     ...variants
   };
+
   const refsRef = React.useRef({});
   const $refs = refsRef.current;
 
@@ -213,7 +230,7 @@ const PlasmicDescendants = {
 } as const;
 type NodeNameType = keyof typeof PlasmicDescendants;
 type DescendantsType<T extends NodeNameType> =
-  (typeof PlasmicDescendants)[T][number];
+  typeof PlasmicDescendants[T][number];
 type NodeDefaultElementType = {
   root: "div";
   h2: "h2";
@@ -233,15 +250,15 @@ type NodeComponentProps<T extends NodeNameType> =
     args?: PlasmicHero__ArgsType;
     overrides?: NodeOverridesType<T>;
   } & Omit<PlasmicHero__VariantsArgs, ReservedPropsType> & // Specify variants directly as props
-    /* Specify args directly as props*/ Omit<
-      PlasmicHero__ArgsType,
-      ReservedPropsType
-    > &
-    /* Specify overrides for each element directly as props*/ Omit<
+    // Specify args directly as props
+    Omit<PlasmicHero__ArgsType, ReservedPropsType> &
+    // Specify overrides for each element directly as props
+    Omit<
       NodeOverridesType<T>,
       ReservedPropsType | VariantPropType | ArgPropType
     > &
-    /* Specify props for the root element*/ Omit<
+    // Specify props for the root element
+    Omit<
       Partial<React.ComponentProps<NodeDefaultElementType[T]>>,
       ReservedPropsType | VariantPropType | ArgPropType | DescendantsType<T>
     >;

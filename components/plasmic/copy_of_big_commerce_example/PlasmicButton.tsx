@@ -17,7 +17,7 @@ import Link, { LinkProps } from "next/link";
 import { useRouter } from "next/router";
 
 import * as p from "@plasmicapp/react-web";
-import * as ph from "@plasmicapp/host";
+import * as ph from "@plasmicapp/react-web/lib/host";
 
 import * as pp from "@plasmicapp/react-web";
 import {
@@ -67,6 +67,7 @@ export type PlasmicButton__VariantMembers = {
     | "clear"
     | "link";
 };
+
 export type PlasmicButton__VariantsArgs = {
   showStartIcon?: SingleBooleanChoiceArg<"showStartIcon">;
   showEndIcon?: SingleBooleanChoiceArg<"showEndIcon">;
@@ -89,6 +90,7 @@ export type PlasmicButton__VariantsArgs = {
     | "link"
   >;
 };
+
 type VariantPropType = keyof PlasmicButton__VariantsArgs;
 export const PlasmicButton__VariantProps = new Array<VariantPropType>(
   "showStartIcon",
@@ -105,6 +107,7 @@ export type PlasmicButton__ArgsType = {
   endIcon?: React.ReactNode;
   link?: string;
 };
+
 type ArgPropType = keyof PlasmicButton__ArgsType;
 export const PlasmicButton__ArgProps = new Array<ArgPropType>(
   "children",
@@ -148,6 +151,13 @@ const __wrapUserPromise =
     return await promise;
   });
 
+function useNextRouter() {
+  try {
+    return useRouter();
+  } catch {}
+  return undefined;
+}
+
 function PlasmicButton__RenderFunc(props: {
   variants: PlasmicButton__VariantsArgs;
   args: PlasmicButton__ArgsType;
@@ -156,15 +166,24 @@ function PlasmicButton__RenderFunc(props: {
   forNode?: string;
 }) {
   const { variants, overrides, forNode } = props;
-  const __nextRouter = useRouter();
+  const __nextRouter = useNextRouter();
 
   const $ctx = ph.useDataEnv?.() || {};
-  const args = React.useMemo(() => Object.assign({}, props.args), [props.args]);
+  const args = React.useMemo(
+    () =>
+      Object.assign(
+        {},
+
+        props.args
+      ),
+    [props.args]
+  );
 
   const $props = {
     ...args,
     ...variants
   };
+
   const refsRef = React.useRef({});
   const $refs = refsRef.current;
 
@@ -180,6 +199,7 @@ function PlasmicButton__RenderFunc(props: {
           ? ({ $props, $state, $queries, $ctx }) => $props.showStartIcon
           : undefined
       },
+
       {
         path: "showEndIcon",
         type: "private",
@@ -188,6 +208,7 @@ function PlasmicButton__RenderFunc(props: {
           ? ({ $props, $state, $queries, $ctx }) => $props.showEndIcon
           : undefined
       },
+
       {
         path: "isDisabled",
         type: "private",
@@ -196,6 +217,7 @@ function PlasmicButton__RenderFunc(props: {
           ? ({ $props, $state, $queries, $ctx }) => $props.isDisabled
           : undefined
       },
+
       {
         path: "shape",
         type: "private",
@@ -204,6 +226,7 @@ function PlasmicButton__RenderFunc(props: {
           ? ({ $props, $state, $queries, $ctx }) => $props.shape
           : undefined
       },
+
       {
         path: "size",
         type: "private",
@@ -212,6 +235,7 @@ function PlasmicButton__RenderFunc(props: {
           ? ({ $props, $state, $queries, $ctx }) => $props.size
           : undefined
       },
+
       {
         path: "color",
         type: "private",
@@ -221,6 +245,7 @@ function PlasmicButton__RenderFunc(props: {
           : undefined
       }
     ],
+
     [$props, $ctx]
   );
   const $state = p.useDollarState(stateSpecs, { $props, $ctx, $queries });
@@ -229,6 +254,7 @@ function PlasmicButton__RenderFunc(props: {
     useTrigger("useFocusVisibleWithin", {
       isTextInput: false
     });
+
   const triggers = {
     focusVisibleWithin_root: isRootFocusVisibleWithin
   };
@@ -654,7 +680,7 @@ const PlasmicDescendants = {
 } as const;
 type NodeNameType = keyof typeof PlasmicDescendants;
 type DescendantsType<T extends NodeNameType> =
-  (typeof PlasmicDescendants)[T][number];
+  typeof PlasmicDescendants[T][number];
 type NodeDefaultElementType = {
   root: "button";
   startIconContainer: "div";
@@ -674,15 +700,15 @@ type NodeComponentProps<T extends NodeNameType> =
     args?: PlasmicButton__ArgsType;
     overrides?: NodeOverridesType<T>;
   } & Omit<PlasmicButton__VariantsArgs, ReservedPropsType> & // Specify variants directly as props
-    /* Specify args directly as props*/ Omit<
-      PlasmicButton__ArgsType,
-      ReservedPropsType
-    > &
-    /* Specify overrides for each element directly as props*/ Omit<
+    // Specify args directly as props
+    Omit<PlasmicButton__ArgsType, ReservedPropsType> &
+    // Specify overrides for each element directly as props
+    Omit<
       NodeOverridesType<T>,
       ReservedPropsType | VariantPropType | ArgPropType
     > &
-    /* Specify props for the root element*/ Omit<
+    // Specify props for the root element
+    Omit<
       Partial<React.ComponentProps<NodeDefaultElementType[T]>>,
       ReservedPropsType | VariantPropType | ArgPropType | DescendantsType<T>
     >;

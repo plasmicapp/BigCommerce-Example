@@ -17,7 +17,7 @@ import Link, { LinkProps } from "next/link";
 import { useRouter } from "next/router";
 
 import * as p from "@plasmicapp/react-web";
-import * as ph from "@plasmicapp/host";
+import * as ph from "@plasmicapp/react-web/lib/host";
 
 import {
   hasVariant,
@@ -46,6 +46,7 @@ import projectcss from "./plasmic_copy_of_big_commerce_example.module.css"; // p
 import sty from "./PlasmicNewPage.module.css"; // plasmic-import: N02-n_p-e8/css
 
 export type PlasmicNewPage__VariantMembers = {};
+
 export type PlasmicNewPage__VariantsArgs = {};
 type VariantPropType = keyof PlasmicNewPage__VariantsArgs;
 export const PlasmicNewPage__VariantProps = new Array<VariantPropType>();
@@ -69,6 +70,13 @@ const __wrapUserPromise =
     return await promise;
   });
 
+function useNextRouter() {
+  try {
+    return useRouter();
+  } catch {}
+  return undefined;
+}
+
 function PlasmicNewPage__RenderFunc(props: {
   variants: PlasmicNewPage__VariantsArgs;
   args: PlasmicNewPage__ArgsType;
@@ -77,15 +85,24 @@ function PlasmicNewPage__RenderFunc(props: {
   forNode?: string;
 }) {
   const { variants, overrides, forNode } = props;
-  const __nextRouter = useRouter();
+  const __nextRouter = useNextRouter();
 
   const $ctx = ph.useDataEnv?.() || {};
-  const args = React.useMemo(() => Object.assign({}, props.args), [props.args]);
+  const args = React.useMemo(
+    () =>
+      Object.assign(
+        {},
+
+        props.args
+      ),
+    [props.args]
+  );
 
   const $props = {
     ...args,
     ...variants
   };
+
   const refsRef = React.useRef({});
   const $refs = refsRef.current;
 
@@ -186,7 +203,7 @@ const PlasmicDescendants = {
 } as const;
 type NodeNameType = keyof typeof PlasmicDescendants;
 type DescendantsType<T extends NodeNameType> =
-  (typeof PlasmicDescendants)[T][number];
+  typeof PlasmicDescendants[T][number];
 type NodeDefaultElementType = {
   root: "div";
   productCollection: typeof ProductCollection;
@@ -204,15 +221,15 @@ type NodeComponentProps<T extends NodeNameType> =
     args?: PlasmicNewPage__ArgsType;
     overrides?: NodeOverridesType<T>;
   } & Omit<PlasmicNewPage__VariantsArgs, ReservedPropsType> & // Specify variants directly as props
-    /* Specify args directly as props*/ Omit<
-      PlasmicNewPage__ArgsType,
-      ReservedPropsType
-    > &
-    /* Specify overrides for each element directly as props*/ Omit<
+    // Specify args directly as props
+    Omit<PlasmicNewPage__ArgsType, ReservedPropsType> &
+    // Specify overrides for each element directly as props
+    Omit<
       NodeOverridesType<T>,
       ReservedPropsType | VariantPropType | ArgPropType
     > &
-    /* Specify props for the root element*/ Omit<
+    // Specify props for the root element
+    Omit<
       Partial<React.ComponentProps<NodeDefaultElementType[T]>>,
       ReservedPropsType | VariantPropType | ArgPropType | DescendantsType<T>
     >;

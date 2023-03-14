@@ -17,7 +17,7 @@ import Link, { LinkProps } from "next/link";
 import { useRouter } from "next/router";
 
 import * as p from "@plasmicapp/react-web";
-import * as ph from "@plasmicapp/host";
+import * as ph from "@plasmicapp/react-web/lib/host";
 
 import {
   hasVariant,
@@ -55,6 +55,7 @@ import SearchsvgIcon from "./icons/PlasmicIcon__Searchsvg"; // plasmic-import: M
 import WishlistIcon from "./icons/PlasmicIcon__Wishlist"; // plasmic-import: LA7TScipP25zOl/icon
 
 export type PlasmicNavbar__VariantMembers = {};
+
 export type PlasmicNavbar__VariantsArgs = {};
 type VariantPropType = keyof PlasmicNavbar__VariantsArgs;
 export const PlasmicNavbar__VariantProps = new Array<VariantPropType>();
@@ -62,6 +63,7 @@ export const PlasmicNavbar__VariantProps = new Array<VariantPropType>();
 export type PlasmicNavbar__ArgsType = {
   query?: string;
 };
+
 type ArgPropType = keyof PlasmicNavbar__ArgsType;
 export const PlasmicNavbar__ArgProps = new Array<ArgPropType>("query");
 
@@ -72,7 +74,6 @@ export type PlasmicNavbar__OverridesType = {
   categoryField?: p.Flex<typeof CategoryField>;
   textInput?: p.Flex<typeof TextInput>;
   cart?: p.Flex<typeof Cart>;
-  textbox?: p.Flex<typeof TextInput>;
 };
 
 export interface DefaultNavbarProps {
@@ -88,6 +89,13 @@ const __wrapUserPromise =
     return await promise;
   });
 
+function useNextRouter() {
+  try {
+    return useRouter();
+  } catch {}
+  return undefined;
+}
+
 function PlasmicNavbar__RenderFunc(props: {
   variants: PlasmicNavbar__VariantsArgs;
   args: PlasmicNavbar__ArgsType;
@@ -96,20 +104,44 @@ function PlasmicNavbar__RenderFunc(props: {
   forNode?: string;
 }) {
   const { variants, overrides, forNode } = props;
-  const __nextRouter = useRouter();
+  const __nextRouter = useNextRouter();
 
   const $ctx = ph.useDataEnv?.() || {};
-  const args = React.useMemo(() => Object.assign({}, props.args), [props.args]);
+  const args = React.useMemo(
+    () =>
+      Object.assign(
+        {},
+
+        props.args
+      ),
+    [props.args]
+  );
 
   const $props = {
     ...args,
     ...variants
   };
+
   const refsRef = React.useRef({});
   const $refs = refsRef.current;
 
   const currentUser = p.useCurrentUser?.() || {};
   const [$queries, setDollarQueries] = React.useState({});
+  const stateSpecs = React.useMemo(
+    () => [
+      {
+        path: "textInput.value",
+        type: "private",
+        variableType: "text",
+        initFunc: true
+          ? ({ $props, $state, $queries, $ctx }) => $props["query"]
+          : undefined
+      }
+    ],
+
+    [$props, $ctx]
+  );
+  const $state = p.useDollarState(stateSpecs, { $props, $ctx, $queries });
 
   const globalVariants = ensureGlobalVariants({
     screen: useScreenVariants_7B4JcqpiMNuGn()
@@ -240,14 +272,19 @@ function PlasmicNavbar__RenderFunc(props: {
           data-plasmic-override={overrides.textInput}
           className={classNames("__wab_instance", sty.textInput)}
           color={"dark" as const}
-          defaultValue={args.query}
           endIcon={
             <SearchsvgIcon
               className={classNames(projectcss.all, sty.svg__ikgQy)}
               role={"img"}
             />
           }
+          onChange={(...eventArgs) => {
+            p.generateStateOnChangeProp($state, ["textInput", "value"])(
+              (e => e.target?.value).apply(null, eventArgs)
+            );
+          }}
           showEndIcon={true}
+          value={p.generateStateValueProp($state, ["textInput", "value"])}
         />
       ) : null}
       {true ? (
@@ -281,18 +318,17 @@ const PlasmicDescendants = {
     "categoryCollection",
     "categoryField",
     "textInput",
-    "textbox",
     "cart"
   ],
   link: ["link"],
   categoryCollection: ["categoryCollection", "categoryField"],
   categoryField: ["categoryField"],
-  textInput: ["textInput", "textbox"],
+  textInput: ["textInput"],
   cart: ["cart"]
 } as const;
 type NodeNameType = keyof typeof PlasmicDescendants;
 type DescendantsType<T extends NodeNameType> =
-  (typeof PlasmicDescendants)[T][number];
+  typeof PlasmicDescendants[T][number];
 type NodeDefaultElementType = {
   root: "div";
   link: "a";
@@ -314,15 +350,15 @@ type NodeComponentProps<T extends NodeNameType> =
     args?: PlasmicNavbar__ArgsType;
     overrides?: NodeOverridesType<T>;
   } & Omit<PlasmicNavbar__VariantsArgs, ReservedPropsType> & // Specify variants directly as props
-    /* Specify args directly as props*/ Omit<
-      PlasmicNavbar__ArgsType,
-      ReservedPropsType
-    > &
-    /* Specify overrides for each element directly as props*/ Omit<
+    // Specify args directly as props
+    Omit<PlasmicNavbar__ArgsType, ReservedPropsType> &
+    // Specify overrides for each element directly as props
+    Omit<
       NodeOverridesType<T>,
       ReservedPropsType | VariantPropType | ArgPropType
     > &
-    /* Specify props for the root element*/ Omit<
+    // Specify props for the root element
+    Omit<
       Partial<React.ComponentProps<NodeDefaultElementType[T]>>,
       ReservedPropsType | VariantPropType | ArgPropType | DescendantsType<T>
     >;

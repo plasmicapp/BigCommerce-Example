@@ -17,7 +17,7 @@ import Link, { LinkProps } from "next/link";
 import { useRouter } from "next/router";
 
 import * as p from "@plasmicapp/react-web";
-import * as ph from "@plasmicapp/host";
+import * as ph from "@plasmicapp/react-web/lib/host";
 
 import {
   hasVariant,
@@ -55,6 +55,7 @@ import projectcss from "./plasmic_copy_of_big_commerce_example.module.css"; // p
 import sty from "./PlasmicHomepage.module.css"; // plasmic-import: dv9qw-MMxIGQ3/css
 
 export type PlasmicHomepage__VariantMembers = {};
+
 export type PlasmicHomepage__VariantsArgs = {};
 type VariantPropType = keyof PlasmicHomepage__VariantsArgs;
 export const PlasmicHomepage__VariantProps = new Array<VariantPropType>();
@@ -70,6 +71,7 @@ export type PlasmicHomepage__OverridesType = {
   marquee?: p.Flex<"div">;
   marquee2?: p.Flex<"div">;
   footer?: p.Flex<typeof Footer>;
+  text?: p.Flex<"div">;
 };
 
 export interface DefaultHomepageProps {}
@@ -82,6 +84,13 @@ const __wrapUserPromise =
     return await promise;
   });
 
+function useNextRouter() {
+  try {
+    return useRouter();
+  } catch {}
+  return undefined;
+}
+
 function PlasmicHomepage__RenderFunc(props: {
   variants: PlasmicHomepage__VariantsArgs;
   args: PlasmicHomepage__ArgsType;
@@ -90,15 +99,24 @@ function PlasmicHomepage__RenderFunc(props: {
   forNode?: string;
 }) {
   const { variants, overrides, forNode } = props;
-  const __nextRouter = useRouter();
+  const __nextRouter = useNextRouter();
 
   const $ctx = ph.useDataEnv?.() || {};
-  const args = React.useMemo(() => Object.assign({}, props.args), [props.args]);
+  const args = React.useMemo(
+    () =>
+      Object.assign(
+        {},
+
+        props.args
+      ),
+    [props.args]
+  );
 
   const $props = {
     ...args,
     ...variants
   };
+
   const refsRef = React.useRef({});
   const $refs = refsRef.current;
 
@@ -592,6 +610,18 @@ function PlasmicHomepage__RenderFunc(props: {
             data-plasmic-override={overrides.footer}
             className={classNames("__wab_instance", sty.footer)}
           />
+
+          <div
+            data-plasmic-name={"text"}
+            data-plasmic-override={overrides.text}
+            className={classNames(
+              projectcss.all,
+              projectcss.__wab_text,
+              sty.text
+            )}
+          >
+            {"Enter some text"}
+          </div>
         </p.Stack>
       </div>
     </React.Fragment>
@@ -605,17 +635,19 @@ const PlasmicDescendants = {
     "productCollection",
     "marquee",
     "marquee2",
-    "footer"
+    "footer",
+    "text"
   ],
   navbar: ["navbar"],
   productCollection: ["productCollection"],
   marquee: ["marquee"],
   marquee2: ["marquee2"],
-  footer: ["footer"]
+  footer: ["footer"],
+  text: ["text"]
 } as const;
 type NodeNameType = keyof typeof PlasmicDescendants;
 type DescendantsType<T extends NodeNameType> =
-  (typeof PlasmicDescendants)[T][number];
+  typeof PlasmicDescendants[T][number];
 type NodeDefaultElementType = {
   root: "div";
   navbar: typeof Navbar;
@@ -623,6 +655,7 @@ type NodeDefaultElementType = {
   marquee: "div";
   marquee2: "div";
   footer: typeof Footer;
+  text: "div";
 };
 
 type ReservedPropsType = "variants" | "args" | "overrides";
@@ -637,15 +670,15 @@ type NodeComponentProps<T extends NodeNameType> =
     args?: PlasmicHomepage__ArgsType;
     overrides?: NodeOverridesType<T>;
   } & Omit<PlasmicHomepage__VariantsArgs, ReservedPropsType> & // Specify variants directly as props
-    /* Specify args directly as props*/ Omit<
-      PlasmicHomepage__ArgsType,
-      ReservedPropsType
-    > &
-    /* Specify overrides for each element directly as props*/ Omit<
+    // Specify args directly as props
+    Omit<PlasmicHomepage__ArgsType, ReservedPropsType> &
+    // Specify overrides for each element directly as props
+    Omit<
       NodeOverridesType<T>,
       ReservedPropsType | VariantPropType | ArgPropType
     > &
-    /* Specify props for the root element*/ Omit<
+    // Specify props for the root element
+    Omit<
       Partial<React.ComponentProps<NodeDefaultElementType[T]>>,
       ReservedPropsType | VariantPropType | ArgPropType | DescendantsType<T>
     >;
@@ -691,6 +724,7 @@ export const PlasmicHomepage = Object.assign(
     marquee: makeNodeComponent("marquee"),
     marquee2: makeNodeComponent("marquee2"),
     footer: makeNodeComponent("footer"),
+    text: makeNodeComponent("text"),
 
     // Metadata about props expected for PlasmicHomepage
     internalVariantProps: PlasmicHomepage__VariantProps,

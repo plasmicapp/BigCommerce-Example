@@ -49,7 +49,7 @@ export const commerceProviderMeta: GlobalContextMeta<CommerceProviderProps> = {
     },
   },
   description: `Get your BigCommerce Credentials from the bigcommerce admin UI under Developer > Settings > API accounts`,
-  importPath: "@plasmicpkgs/commerce-bigcommerce",
+  importPath: "./commerce/bigcommerce/registerCommerceProvider",
   importName: "CommerceProviderComponent",
 };
 

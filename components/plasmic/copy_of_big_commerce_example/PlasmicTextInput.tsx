@@ -17,7 +17,7 @@ import Link, { LinkProps } from "next/link";
 import { useRouter } from "next/router";
 
 import * as p from "@plasmicapp/react-web";
-import * as ph from "@plasmicapp/host";
+import * as ph from "@plasmicapp/react-web/lib/host";
 
 import * as pp from "@plasmicapp/react-web";
 import {
@@ -52,12 +52,14 @@ export type PlasmicTextInput__VariantMembers = {
   isDisabled: "isDisabled";
   color: "dark";
 };
+
 export type PlasmicTextInput__VariantsArgs = {
   showStartIcon?: SingleBooleanChoiceArg<"showStartIcon">;
   showEndIcon?: SingleBooleanChoiceArg<"showEndIcon">;
   isDisabled?: SingleBooleanChoiceArg<"isDisabled">;
   color?: SingleChoiceArg<"dark">;
 };
+
 type VariantPropType = keyof PlasmicTextInput__VariantsArgs;
 export const PlasmicTextInput__VariantProps = new Array<VariantPropType>(
   "showStartIcon",
@@ -70,12 +72,13 @@ export type PlasmicTextInput__ArgsType = {
   placeholder?: string;
   endIcon?: React.ReactNode;
   startIcon?: React.ReactNode;
-  value?: any;
+  value?: string;
   name?: string;
   required?: boolean;
   "aria-label"?: string;
   "aria-labelledby"?: string;
 };
+
 type ArgPropType = keyof PlasmicTextInput__ArgsType;
 export const PlasmicTextInput__ArgProps = new Array<ArgPropType>(
   "placeholder",
@@ -97,7 +100,7 @@ export type PlasmicTextInput__OverridesType = {
 
 export interface DefaultTextInputProps extends pp.BaseTextInputProps {
   placeholder?: string;
-  value?: any;
+  value?: string;
   name?: string;
   required?: boolean;
   "aria-label"?: string;
@@ -113,6 +116,13 @@ const __wrapUserPromise =
     return await promise;
   });
 
+function useNextRouter() {
+  try {
+    return useRouter();
+  } catch {}
+  return undefined;
+}
+
 function PlasmicTextInput__RenderFunc(props: {
   variants: PlasmicTextInput__VariantsArgs;
   args: PlasmicTextInput__ArgsType;
@@ -121,7 +131,7 @@ function PlasmicTextInput__RenderFunc(props: {
   forNode?: string;
 }) {
   const { variants, overrides, forNode } = props;
-  const __nextRouter = useRouter();
+  const __nextRouter = useNextRouter();
 
   const $ctx = ph.useDataEnv?.() || {};
   const args = React.useMemo(
@@ -139,6 +149,7 @@ function PlasmicTextInput__RenderFunc(props: {
     ...args,
     ...variants
   };
+
   const refsRef = React.useRef({});
   const $refs = refsRef.current;
 
@@ -154,6 +165,7 @@ function PlasmicTextInput__RenderFunc(props: {
           ? ({ $props, $state, $queries, $ctx }) => $props.showStartIcon
           : undefined
       },
+
       {
         path: "showEndIcon",
         type: "private",
@@ -162,6 +174,7 @@ function PlasmicTextInput__RenderFunc(props: {
           ? ({ $props, $state, $queries, $ctx }) => $props.showEndIcon
           : undefined
       },
+
       {
         path: "isDisabled",
         type: "private",
@@ -170,6 +183,7 @@ function PlasmicTextInput__RenderFunc(props: {
           ? ({ $props, $state, $queries, $ctx }) => $props.isDisabled
           : undefined
       },
+
       {
         path: "color",
         type: "private",
@@ -177,8 +191,18 @@ function PlasmicTextInput__RenderFunc(props: {
         initFunc: true
           ? ({ $props, $state, $queries, $ctx }) => $props.color
           : undefined
+      },
+
+      {
+        path: "value",
+        type: "writable",
+        variableType: "text",
+
+        valueProp: "value",
+        onChangeProp: "onChange"
       }
     ],
+
     [$props, $ctx]
   );
   const $state = p.useDollarState(stateSpecs, { $props, $ctx, $queries });
@@ -187,6 +211,7 @@ function PlasmicTextInput__RenderFunc(props: {
     useTrigger("useFocusVisibleWithin", {
       isTextInput: true
     });
+
   const triggers = {
     focusVisibleWithin_root: isRootFocusVisibleWithin
   };
@@ -370,7 +395,7 @@ const PlasmicDescendants = {
 } as const;
 type NodeNameType = keyof typeof PlasmicDescendants;
 type DescendantsType<T extends NodeNameType> =
-  (typeof PlasmicDescendants)[T][number];
+  typeof PlasmicDescendants[T][number];
 type NodeDefaultElementType = {
   root: "div";
   startIconContainer: "div";
@@ -390,15 +415,15 @@ type NodeComponentProps<T extends NodeNameType> =
     args?: PlasmicTextInput__ArgsType;
     overrides?: NodeOverridesType<T>;
   } & Omit<PlasmicTextInput__VariantsArgs, ReservedPropsType> & // Specify variants directly as props
-    /* Specify args directly as props*/ Omit<
-      PlasmicTextInput__ArgsType,
-      ReservedPropsType
-    > &
-    /* Specify overrides for each element directly as props*/ Omit<
+    // Specify args directly as props
+    Omit<PlasmicTextInput__ArgsType, ReservedPropsType> &
+    // Specify overrides for each element directly as props
+    Omit<
       NodeOverridesType<T>,
       ReservedPropsType | VariantPropType | ArgPropType
     > &
-    /* Specify props for the root element*/ Omit<
+    // Specify props for the root element
+    Omit<
       Partial<React.ComponentProps<NodeDefaultElementType[T]>>,
       ReservedPropsType | VariantPropType | ArgPropType | DescendantsType<T>
     >;

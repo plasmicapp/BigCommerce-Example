@@ -17,7 +17,7 @@ import Link, { LinkProps } from "next/link";
 import { useRouter } from "next/router";
 
 import * as p from "@plasmicapp/react-web";
-import * as ph from "@plasmicapp/host";
+import * as ph from "@plasmicapp/react-web/lib/host";
 
 import {
   hasVariant,
@@ -55,6 +55,7 @@ export type PlasmicProductCard__VariantMembers = {
   imageUrl: "imageUrl";
   hidePrice: "hidePrice";
 };
+
 export type PlasmicProductCard__VariantsArgs = {
   color?: SingleChoiceArg<"violet" | "white" | "black" | "pink">;
   shape?: SingleChoiceArg<"slim">;
@@ -62,6 +63,7 @@ export type PlasmicProductCard__VariantsArgs = {
   imageUrl?: SingleBooleanChoiceArg<"imageUrl">;
   hidePrice?: SingleBooleanChoiceArg<"hidePrice">;
 };
+
 type VariantPropType = keyof PlasmicProductCard__VariantsArgs;
 export const PlasmicProductCard__VariantProps = new Array<VariantPropType>(
   "color",
@@ -76,6 +78,7 @@ export type PlasmicProductCard__ArgsType = {
   children?: React.ReactNode;
   slot?: React.ReactNode;
 };
+
 type ArgPropType = keyof PlasmicProductCard__ArgsType;
 export const PlasmicProductCard__ArgProps = new Array<ArgPropType>(
   "imageIndex",
@@ -111,6 +114,13 @@ const __wrapUserPromise =
     return await promise;
   });
 
+function useNextRouter() {
+  try {
+    return useRouter();
+  } catch {}
+  return undefined;
+}
+
 function PlasmicProductCard__RenderFunc(props: {
   variants: PlasmicProductCard__VariantsArgs;
   args: PlasmicProductCard__ArgsType;
@@ -119,7 +129,7 @@ function PlasmicProductCard__RenderFunc(props: {
   forNode?: string;
 }) {
   const { variants, overrides, forNode } = props;
-  const __nextRouter = useRouter();
+  const __nextRouter = useNextRouter();
 
   const $ctx = ph.useDataEnv?.() || {};
   const args = React.useMemo(
@@ -137,6 +147,7 @@ function PlasmicProductCard__RenderFunc(props: {
     ...args,
     ...variants
   };
+
   const refsRef = React.useRef({});
   const $refs = refsRef.current;
 
@@ -152,6 +163,7 @@ function PlasmicProductCard__RenderFunc(props: {
           ? ({ $props, $state, $queries, $ctx }) => $props.color
           : undefined
       },
+
       {
         path: "shape",
         type: "private",
@@ -160,6 +172,7 @@ function PlasmicProductCard__RenderFunc(props: {
           ? ({ $props, $state, $queries, $ctx }) => $props.shape
           : undefined
       },
+
       {
         path: "hideWishlist",
         type: "private",
@@ -168,6 +181,7 @@ function PlasmicProductCard__RenderFunc(props: {
           ? ({ $props, $state, $queries, $ctx }) => $props.hideWishlist
           : undefined
       },
+
       {
         path: "imageUrl",
         type: "private",
@@ -176,6 +190,7 @@ function PlasmicProductCard__RenderFunc(props: {
           ? ({ $props, $state, $queries, $ctx }) => $props.imageUrl
           : undefined
       },
+
       {
         path: "hidePrice",
         type: "private",
@@ -185,6 +200,7 @@ function PlasmicProductCard__RenderFunc(props: {
           : undefined
       }
     ],
+
     [$props, $ctx]
   );
   const $state = p.useDollarState(stateSpecs, { $props, $ctx, $queries });
@@ -559,7 +575,7 @@ const PlasmicDescendants = {
 } as const;
 type NodeNameType = keyof typeof PlasmicDescendants;
 type DescendantsType<T extends NodeNameType> =
-  (typeof PlasmicDescendants)[T][number];
+  typeof PlasmicDescendants[T][number];
 type NodeDefaultElementType = {
   root: "div";
   productLink: typeof ProductLink;
@@ -580,15 +596,15 @@ type NodeComponentProps<T extends NodeNameType> =
     args?: PlasmicProductCard__ArgsType;
     overrides?: NodeOverridesType<T>;
   } & Omit<PlasmicProductCard__VariantsArgs, ReservedPropsType> & // Specify variants directly as props
-    /* Specify args directly as props*/ Omit<
-      PlasmicProductCard__ArgsType,
-      ReservedPropsType
-    > &
-    /* Specify overrides for each element directly as props*/ Omit<
+    // Specify args directly as props
+    Omit<PlasmicProductCard__ArgsType, ReservedPropsType> &
+    // Specify overrides for each element directly as props
+    Omit<
       NodeOverridesType<T>,
       ReservedPropsType | VariantPropType | ArgPropType
     > &
-    /* Specify props for the root element*/ Omit<
+    // Specify props for the root element
+    Omit<
       Partial<React.ComponentProps<NodeDefaultElementType[T]>>,
       ReservedPropsType | VariantPropType | ArgPropType | DescendantsType<T>
     >;

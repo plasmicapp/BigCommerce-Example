@@ -17,7 +17,7 @@ import Link, { LinkProps } from "next/link";
 import { useRouter } from "next/router";
 
 import * as p from "@plasmicapp/react-web";
-import * as ph from "@plasmicapp/host";
+import * as ph from "@plasmicapp/react-web/lib/host";
 
 import {
   hasVariant,
@@ -47,9 +47,11 @@ import ChevronIcon from "./icons/PlasmicIcon__Chevron"; // plasmic-import: avfRM
 export type PlasmicCollapse__VariantMembers = {
   isOpen: "isOpen";
 };
+
 export type PlasmicCollapse__VariantsArgs = {
   isOpen?: SingleBooleanChoiceArg<"isOpen">;
 };
+
 type VariantPropType = keyof PlasmicCollapse__VariantsArgs;
 export const PlasmicCollapse__VariantProps = new Array<VariantPropType>(
   "isOpen"
@@ -59,6 +61,7 @@ export type PlasmicCollapse__ArgsType = {
   title?: React.ReactNode;
   content?: React.ReactNode;
 };
+
 type ArgPropType = keyof PlasmicCollapse__ArgsType;
 export const PlasmicCollapse__ArgProps = new Array<ArgPropType>(
   "title",
@@ -84,6 +87,13 @@ const __wrapUserPromise =
     return await promise;
   });
 
+function useNextRouter() {
+  try {
+    return useRouter();
+  } catch {}
+  return undefined;
+}
+
 function PlasmicCollapse__RenderFunc(props: {
   variants: PlasmicCollapse__VariantsArgs;
   args: PlasmicCollapse__ArgsType;
@@ -92,15 +102,24 @@ function PlasmicCollapse__RenderFunc(props: {
   forNode?: string;
 }) {
   const { variants, overrides, forNode } = props;
-  const __nextRouter = useRouter();
+  const __nextRouter = useNextRouter();
 
   const $ctx = ph.useDataEnv?.() || {};
-  const args = React.useMemo(() => Object.assign({}, props.args), [props.args]);
+  const args = React.useMemo(
+    () =>
+      Object.assign(
+        {},
+
+        props.args
+      ),
+    [props.args]
+  );
 
   const $props = {
     ...args,
     ...variants
   };
+
   const refsRef = React.useRef({});
   const $refs = refsRef.current;
 
@@ -117,6 +136,7 @@ function PlasmicCollapse__RenderFunc(props: {
           : undefined
       }
     ],
+
     [$props, $ctx]
   );
   const $state = p.useDollarState(stateSpecs, { $props, $ctx, $queries });
@@ -220,7 +240,7 @@ const PlasmicDescendants = {
 } as const;
 type NodeNameType = keyof typeof PlasmicDescendants;
 type DescendantsType<T extends NodeNameType> =
-  (typeof PlasmicDescendants)[T][number];
+  typeof PlasmicDescendants[T][number];
 type NodeDefaultElementType = {
   root: "div";
 };
@@ -237,15 +257,15 @@ type NodeComponentProps<T extends NodeNameType> =
     args?: PlasmicCollapse__ArgsType;
     overrides?: NodeOverridesType<T>;
   } & Omit<PlasmicCollapse__VariantsArgs, ReservedPropsType> & // Specify variants directly as props
-    /* Specify args directly as props*/ Omit<
-      PlasmicCollapse__ArgsType,
-      ReservedPropsType
-    > &
-    /* Specify overrides for each element directly as props*/ Omit<
+    // Specify args directly as props
+    Omit<PlasmicCollapse__ArgsType, ReservedPropsType> &
+    // Specify overrides for each element directly as props
+    Omit<
       NodeOverridesType<T>,
       ReservedPropsType | VariantPropType | ArgPropType
     > &
-    /* Specify props for the root element*/ Omit<
+    // Specify props for the root element
+    Omit<
       Partial<React.ComponentProps<NodeDefaultElementType[T]>>,
       ReservedPropsType | VariantPropType | ArgPropType | DescendantsType<T>
     >;

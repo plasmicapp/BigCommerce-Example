@@ -5,7 +5,7 @@
 // Plasmic Project: vn4GCfRoYe35APzZGsNDnF
 import * as React from "react";
 import { hasVariant, ensureGlobalVariants } from "@plasmicapp/react-web";
-import { CommerceProviderComponent } from "@plasmicpkgs/commerce-bigcommerce"; // plasmic-import: JuJYgKZmrTfxxT/codeComponent
+import { CommerceProviderComponent } from "../../../commerce/bigcommerce/registerCommerceProvider"; // plasmic-import: JuJYgKZmrTfxxT/codeComponent
 
 export interface GlobalContextsProviderProps {
   children?: React.ReactElement;

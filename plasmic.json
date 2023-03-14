@@ -7,7 +7,7 @@
   },
   "style": {
     "scheme": "css-modules",
-    "defaultStyleCssFilePath": "plasmic/plasmic__default_style.css"
+    "defaultStyleCssFilePath": "plasmic/plasmic__default_style.module.css"
   },
   "images": {
     "scheme": "public-files",
@@ -38,7 +38,8 @@
       ],
       "indirect": true,
       "globalContextsFilePath": "",
-      "codeComponents": []
+      "codeComponents": [],
+      "jsBundleThemes": []
     },
     {
       "projectId": "vn4GCfRoYe35APzZGsNDnF",
@@ -403,7 +404,7 @@
         {
           "id": "JuJYgKZmrTfxxT",
           "name": "CommerceProviderComponent",
-          "componentImportPath": "@plasmicpkgs/commerce-bigcommerce"
+          "componentImportPath": "./commerce/bigcommerce/registerCommerceProvider"
         }
       ]
     }
@@ -422,6 +423,6 @@
   "nextjsConfig": {
     "pagesDir": "../pages"
   },
-  "cliVersion": "0.1.216",
-  "$schema": "https://unpkg.com/@plasmicapp/cli@0.1.216/dist/plasmic.schema.json"
+  "cliVersion": "0.1.221",
+  "$schema": "https://unpkg.com/@plasmicapp/cli@0.1.221/dist/plasmic.schema.json"
 }
