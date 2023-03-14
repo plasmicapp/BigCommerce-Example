@@ -11,7 +11,6 @@
   "dependencies": {
     "@plasmicapp/cli": "^0.1.216",
     "@plasmicapp/host": "^1.0.107",
-    "@plasmicapp/loader-nextjs": "^1.0.233",
     "@plasmicapp/react-web": "^0.2.167",
     "@plasmicpkgs/commerce": "^0.0.101",
     "@types/cookie": "^0.5.1",
