@@ -1,11 +1,14 @@
 import * as React from 'react';
-import { PlasmicCanvasHost } from '@plasmicapp/host';
+import { PlasmicCanvasHost } from '@plasmicapp/loader-nextjs';
+import { PLASMIC } from 'plasmic-init';
 import { registerAll } from "@plasmicpkgs/commerce"
+import { registerCommerceProvider } from '@/commerce/shopify';
 import { registerCommerceProvider as registerBigCommerce } from '@/commerce/bigcommerce';
 export default function PlasmicHost() {
-  return <PlasmicCanvasHost />;
+  return PLASMIC && <PlasmicCanvasHost />;
 }
 
-registerAll();
-registerBigCommerce();
+registerAll(PLASMIC);
+// registerCommerceProvider(PLASMIC);
+registerBigCommerce(PLASMIC);
 
