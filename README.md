@@ -1,25 +1,13 @@
-This is a Next.js project bootstrapped with [`create-plasmic-app`](https://www.npmjs.com/package/create-plasmic-app).
+# Plasmic BigCommerce components and example
 
-## Getting Started
+This repo contains the Plasmic code components to let you integrate with BigCommerce store and build out any pages that go in a headless storefront.
 
-First, run the development server:
+## Getting started
 
-```bash
-npm run dev
-```
+- Clone the Plasmic project: https://studio.plasmic.app/projects/vn4GCfRoYe35APzZGsNDnF
+- In the project, in the Project Settings left sidebar tab, replace the credentials with your own.
+- Update `plasmic-init.ts` to point to your new project and API token (click the Code button in the Plasmic Studio toolbar to copy this).
 
-Open your browser to see the result.
+See an example of commerce components in action (BigCommerce integration works identically): https://www.youtube.com/watch?v=1OJ_gXmta2Q
 
-You can start editing your project in Plasmic Studio. The page auto-updates as you edit the project.
-
-## Learn More
-
-With Plasmic, you can enable non-developers on your team to publish pages and content into your website or app.
-
-To learn more about Plasmic, take a look at the following resources:
-
-- [Plasmic Website](https://www.plasmic.app/)
-- [Plasmic Documentation](https://docs.plasmic.app/learn/)
-- [Plasmic Slack Community](https://www.plasmic.app/slack)
-
-You can check out [the Plasmic GitHub repository](https://github.com/plasmicapp/plasmic) - your feedback and contributions are welcome!
+Join https://plasmic.app/slack or email help@plasmic.app for any help!
