@@ -21,7 +21,7 @@ export const commerceProviderMeta: GlobalContextMeta<CommerceProviderProps> = {
   props: {
     accessToken: {
       type: "string",
-      defaultValue: "eons8ty1ru4f7zcw1ny9b6vce3bpao0"
+      defaultValue: "2g9y8o40j64hdw0pnll2akjl264cq4x"
     },
     clientName: {
       type: "string",
@@ -29,11 +29,11 @@ export const commerceProviderMeta: GlobalContextMeta<CommerceProviderProps> = {
     },
     clientId: {
       type: "string",
-      defaultValue: "ca7eeef8x6p75goyyd2ujbce29sq8an"
+      defaultValue: "evwct4703bdbwku1j6fyxgybm4gzad4"
     },
     clientSecret: {
       type: "string",
-      defaultValue: "a2fb4256d8e111a8ab6b42b53bfb876a9fbf6672cd91a03bd137a5b7b4f9ad0c"
+      defaultValue: "e879e6799b619c624e0dfa2a08fc6b107926c76149905aa3b2c4d52175127cd9"
     },
     channelId: {
       type: "number",
@@ -41,11 +41,11 @@ export const commerceProviderMeta: GlobalContextMeta<CommerceProviderProps> = {
     },
     storeHash: {
       type: "string",
-      defaultValue: "upbtcjj27c"
+      defaultValue: "dxrfetqrff"
     },
     storeFrontApiToken: {
       type: "string",
-      defaultValue: "eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NiJ9.eyJjaWQiOjEsImNvcnMiOlsiaHR0cDovL2xvY2FsaG9zdDozMDAwIl0sImVhdCI6MTY5Njc4NDcwOCwiaWF0IjoxNjg2MjMzMjExLCJpc3MiOiJCQyIsInNpZCI6MTAwMjk1MTI3Mywic3ViIjoiY2E3ZWVlZjh4NnA3NWdveXlkMnVqYmNlMjlzcThhbiIsInN1Yl90eXBlIjoyLCJ0b2tlbl90eXBlIjoxfQ.p9o7jtDdCDBhS-gazIG2_A2U_cTN2zvmaO7N1dmcbAOc1xYphnuLRjqkWz38q1gW3rcm5dZXPhiUpP7YBS05NA",
+      defaultValue: "eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NiJ9.eyJjaWQiOjEsImNvcnMiOlsiaHR0cHM6Ly9sb2NhbGhvc3QiXSwiZWF0IjoxNjk5OTY1NzQwLCJpYXQiOjE2OTkzNjA5NDEsImlzcyI6IkJDIiwic2lkIjoxMDAyNDM5Nzc1LCJzdWIiOiJldndjdDQ3MDNiZGJ3a3UxajZmeXhneWJtNGd6YWQ0Iiwic3ViX3R5cGUiOjIsInRva2VuX3R5cGUiOjF9.KKQBcrMpqsoF3fNoDv7QSTmbbzovFUXH7kLHVX4M-1ni2uzBTu_Z6xg5FdNLsrXytWYLuZuB5CfziFQp2xEv4g",
     },
   },
   description: `Get your BigCommerce Credentials from the bigcommerce admin UI under Developer > Settings > API accounts`,
