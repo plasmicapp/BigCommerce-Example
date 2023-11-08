@@ -1,25 +1,18 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { FetcherError } from '@plasmicpkgs/commerce';
+import { Fetcher } from '@plasmicpkgs/commerce';
+import { BigCommerceCredentials } from '@/commerce/bigcommerce/provider';
 
-type Data = {
-  name: string
-}
-
-export default async function handler(
-  req: NextApiRequest,
-  nextRes: NextApiResponse
-) {
+export const isomorphicFetcher = async (args: Parameters<Fetcher>[0] & { creds: BigCommerceCredentials }) => {
   const {
     query,
     variables,
     url,
     method,
     creds
-  } = JSON.parse(req.body);
-  const { locale, ...vars } = variables ?? {}
+  } = args
   if (variables?.fetchOptions === 'storeApiFetch') {
-    const res = await fetch(creds.storeApiUrl + url, {
-      method: method,
+    return fetch(creds.storeApiUrl + url, {
+      method,
       headers: {
         "Content-Type": 'application/json',
         'X-Auth-Token': creds.storeApiToken,
@@ -27,15 +20,8 @@ export default async function handler(
         "Accept": "application/json"
       },
     });
-    if (res.status === 204) {
-      nextRes.status(204);
-      return null
-    }
-    const json = await res.json()
-    nextRes.status(200).json({ data: json.data });
-    return ;
-  } else if (variables?.fetchOptions === 'storeFrontApi') {
-    const res = await fetch(creds.storeFrontApiUrl, {
+  } else {
+    return fetch(creds.storeFrontApiUrl, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${creds.storeFrontApiToken}`,
@@ -46,13 +32,25 @@ export default async function handler(
         variables,
       }),
     })
-    const json = await res.json()
-    if (json.errors) {
-      nextRes.status(500).json({ errors: json.errors })
-      return ;
-    }
-    nextRes.status(200).json({ data: json.data, res });
+  }
+}
+
+export default async function handler(
+  req: NextApiRequest,
+  nextRes: NextApiResponse
+) {
+  const args = JSON.parse(req.body);
+  const res = await isomorphicFetcher(args);
+
+  if (res.status === 204) {
+    nextRes.status(204);
+    return null
+  }
+  const json = await res.json();
+  if (json.errors) {
+    nextRes.status(500).json({ errors: json.errors })
     return ;
   }
-  nextRes.status(200).json({ name: 'John Doe' })
+  nextRes.status(200).json({ data: json.data, res });
+  return ;
 }

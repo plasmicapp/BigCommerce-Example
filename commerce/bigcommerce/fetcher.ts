@@ -1,35 +1,29 @@
 import type { Fetcher } from '@plasmicpkgs/commerce';
 import { FetcherError } from '@plasmicpkgs/commerce';
 import { BigCommerceCredentials } from './provider';
+import { isomorphicFetcher } from '@/pages/api/hello';
 
 
 export const getFetcher:
   (creds: BigCommerceCredentials) => Fetcher = (creds) => {
-    return async ({
-      query,
-      variables,
-      url,
-      method
-    }) => {
-      const res = await fetch("/api/hello", {
-        method: "POST",
-        body: JSON.stringify({
-          query,
-          variables,
-          url,
-          method,
-          creds
-        })
-      });
-      if (variables?.fetchOptions === 'storeApiFetch') {
+    return async (args) => {
+      const isClient = typeof window !== "undefined";
+      let res: Response;
+      if (isClient) {
+        res = await fetch("/api/hello", {
+          method: "POST",
+          body: JSON.stringify({...args, creds})
+        });
+      } else {
+        res = await isomorphicFetcher({...args, creds});
+      }
+      if (args.variables?.fetchOptions === 'storeApiFetch') {
         if (res.status === 204) {
           return null
         }
         const json = await res.json()
         return { data: json.data }
-      }
-
-      else if (variables?.fetchOptions === 'storeFrontApi') {
+      } else if (args.variables?.fetchOptions === 'storeFrontApi') {
         const json = await res.json()
         if (json.errors) {
           throw new FetcherError({
@@ -39,5 +33,6 @@ export const getFetcher:
         }
         return { data: json.data, res }
       }
+      return null;
     }
   }
